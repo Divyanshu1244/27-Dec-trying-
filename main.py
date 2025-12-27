@@ -1,12 +1,9 @@
 import os
 import time
 import threading
-from dotenv import load_dotenv
 from pymongo import MongoClient
 import telebot
 from telebot.types import ReplyKeyboardMarkup, ReplyKeyboardRemove, InlineKeyboardMarkup, InlineKeyboardButton
-
-load_dotenv()
 
 BOT_TOKEN = "8216730412:AAGhjFoxoiUNvtq0gYJSuqPU58ARRX-NOJo"
 MONGO_URI = "mongodb+srv://sanjublogscom_db_user:Mahakal456@cluster0.cwi48dt.mongodb.net/telegram_bot_db?appName=Cluster0"
