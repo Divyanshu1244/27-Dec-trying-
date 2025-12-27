@@ -1,7 +1,6 @@
 import os
 import time
 import threading
-from pymongo import MongoClient
 import telebot
 from telebot.types import ReplyKeyboardMarkup, ReplyKeyboardRemove, InlineKeyboardMarkup, InlineKeyboardButton
 
@@ -14,19 +13,19 @@ MAIN_LINK = "https://t.me/+_FVPR7qaQuRhYmY1"
 BACKUP_LINK = "https://t.me/+FkReusMf7r44Nzhl"
 
 bot = telebot.TeleBot(BOT_TOKEN)
-mongo_client = MongoClient(MONGO_URI)
-db = mongo_client["telegram_bot_db"]
-media_collection = db["media"]
+
+# In-memory storage (temporary, data lost on restart)
+media_store = {}
 
 def save_media(media_id, files):
-    media_collection.insert_one({"media_id": media_id, "files": files})
+    media_store[media_id] = files
 
 def get_media(media_id):
-    doc = media_collection.find_one({"media_id": media_id})
-    return doc["files"] if doc else []
+    return media_store.get(media_id, [])
 
 def delete_media(media_id):
-    media_collection.delete_one({"media_id": media_id})
+    if media_id in media_store:
+        del media_store[media_id]
 
 @bot.message_handler(commands=['start'])
 def start(message):
